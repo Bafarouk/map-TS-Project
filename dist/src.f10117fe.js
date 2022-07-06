@@ -138,13 +138,21 @@ function () {
     });
   }
 
-  CustomMap.prototype.addUserMarker = function (user) {
-    new google.maps.Marker({
+  CustomMap.prototype.addMarker = function (mappable) {
+    var _this = this;
+
+    var marker = new google.maps.Marker({
       map: this.googleMap,
       position: {
-        lat: user.location.lat,
-        lng: user.location.lng
+        lat: mappable.location.lat,
+        lng: mappable.location.lng
       }
+    });
+    marker.addListener('click', function () {
+      var infoWindow = new google.maps.InfoWindow({
+        content: mappable.markerContent()
+      });
+      infoWindow.open(_this.googleMap, marker);
     });
   };
 
@@ -22804,10 +22812,44 @@ function () {
     };
   }
 
+  User.prototype.markerContent = function () {
+    return "User name is ".concat(this.name);
+  };
+
   return User;
 }();
 
 exports.User = User;
+},{"@faker-js/faker":"node_modules/@faker-js/faker/dist/esm/index.mjs"}],"src/Company.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Company = void 0;
+
+var faker_1 = require("@faker-js/faker");
+
+var Company =
+/** @class */
+function () {
+  function Company() {
+    this.comapnyName = faker_1.faker.company.companyName();
+    this.catchPhrase = faker_1.faker.company.catchPhrase();
+    this.location = {
+      lat: parseFloat(faker_1.faker.address.latitude()),
+      lng: parseFloat(faker_1.faker.address.longitude())
+    };
+  }
+
+  Company.prototype.markerContent = function () {
+    return "\n    <div>\n      <h3>company name is ".concat(this.comapnyName, "</h3> \n      <h5>catchPhrase is ").concat(this.catchPhrase, "</h5>\n    </div>");
+  };
+
+  return Company;
+}();
+
+exports.Company = Company;
 },{"@faker-js/faker":"node_modules/@faker-js/faker/dist/esm/index.mjs"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
@@ -22819,10 +22861,14 @@ var CustomMap_1 = require("./CustomMap");
 
 var User_1 = require("./User");
 
+var Company_1 = require("./Company");
+
 var user = new User_1.User();
+var company = new Company_1.Company();
 var customMap = new CustomMap_1.CustomMap('map');
-customMap.addUserMarker(user);
-},{"./CustomMap":"src/CustomMap.ts","./User":"src/User.ts"}],"C:/Users/Dell/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+customMap.addMarker(user);
+customMap.addMarker(company);
+},{"./CustomMap":"src/CustomMap.ts","./User":"src/User.ts","./Company":"src/Company.ts"}],"C:/Users/Dell/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -22850,7 +22896,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56206" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59842" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
