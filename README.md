@@ -4,13 +4,10 @@ TypeScript project that generate Random objects User and Company using Faker-js 
 # to run this project
 
 # install dependecies
-
-npm install
+> npm install
 
 # install parcel
-
-npm install --save-dev parcel
+> npm install --save-dev parcel
 
 # run project
-
-parcel index.html
+> parcel index.html
